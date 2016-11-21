@@ -12,4 +12,19 @@ git-clone:
     - rev: master
     - target: /home/blog/rob-salmond-ca
     - require:
-        - pkg: git 
+        - pkg: git
+
+docker-build:
+  dockerng.image_present:
+    - build: /home/blog/rob-salmond-ca/
+
+add-supervisor-config:
+  file:
+    - managed
+    - name: /etc/supervisor/conf.d/blog.conf
+    - source: salt://supervisor/configs/default.conf
+    - user: root
+    - group: root
+    - mode: 600
+    - require:
+      - supervisor
