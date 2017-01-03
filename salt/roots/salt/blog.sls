@@ -14,7 +14,7 @@ git-clone:
     - require:
         - pkg: git
 
-docker-build:
+blog/ghost:latest:
   dockerng.image_present:
     - build: /home/blog/rob-salmond-ca/
 
