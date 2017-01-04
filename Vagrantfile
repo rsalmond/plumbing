@@ -27,6 +27,7 @@ Vagrant.configure(2) do |config|
   end
   config.vm.provision :salt do |salt|
     salt.masterless = true
+    salt.grains_config = "salt/grains-dev"
     salt.minion_config = "salt/minion-config"
     salt.install_type = "stable"
     salt.verbose = true
