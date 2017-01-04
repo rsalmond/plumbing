@@ -30,3 +30,12 @@ phro:
     - mode: 0600
     - require:
       - file: /home/phro/.ssh
+
+/etc/sudoers.d/phro:
+  file.managed:
+    - source: salt://assets/sudoers-phro
+    - user: root
+    - group: root
+    - mode: 0644
+    - require:
+      - user: phro
