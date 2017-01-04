@@ -5,8 +5,19 @@
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
+
+def provisioning?()
+  # true if the current vagrant command will result in a provisioning run
+  provisioning_cmds = ['provision', 'up']
+  provisioning_cmds.include?(ARGV[0].downcase)
+end
+
 Vagrant.configure(2) do |config|
   config.ssh.forward_agent = true
+  if not provisioning?
+    config.ssh.username = 'phro'
+    config.ssh.private_key_path = '~/.ssh/id_salmond_ca'
+  end
   config.vm.box = "debian/contrib-jessie64"
   config.vm.network "private_network", ip: "192.168.33.10"
   config.vm.synced_folder ".", "/vagrant", disabled: true
