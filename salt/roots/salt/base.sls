@@ -2,9 +2,10 @@ install_base_tools:
   pkg.installed:
     - pkgs:
       - vim
+
 git:
   pkg.installed:
-    - pkgis:
+    - pkgs:
       - git
 
 phro:
