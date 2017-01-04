@@ -1,10 +1,28 @@
+{% set environment = salt.grains.get('environment') %}
+
+{% if environment != 'dev' %}
+
 server { 
     listen 80;
     server_name rob.salmond.ca;
     return 301 https://$host$request_uri;
 }
 
+{% endif %}
+
 server {
+
+{% if environment == 'dev' %}
+
+    listen 80;
+    server_name dev.salmond.ca;
+
+{% elif environment == 'stg' %}
+
+    #TODO: something useful
+:
+{% elif environment == 'prod' %}
+
     listen 443 ssl;
     server_name rob.salmond.ca;
 
@@ -17,6 +35,8 @@ server {
     ssl_prefer_server_ciphers on;
     ssl_dhparam /etc/letsencrypt/live/rob.salmond.ca/dhparams.pem;
 
+
+{% endif %}
 
     location /resume {
       return 301 https://github.com/rsalmond/resume;
