@@ -12,6 +12,7 @@ phro:
     - name: phro
     - groups:
       - docker
+    - shell: /bin/bash
 
 /home/phro/.ssh:
   file.directory:
