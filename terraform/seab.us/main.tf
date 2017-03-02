@@ -13,5 +13,7 @@ resource "aws_route53_record" "www" {
   name    = "seab.us"
   type    = "A"
   ttl     = "300"
-  records = ["107.161.27.162"]
+  records = [
+    "${var.vps_ip}"
+  ]
 }
