@@ -9,7 +9,9 @@
 def provisioning?()
   # true if the current vagrant command will result in a provisioning run
   provisioning_cmds = ['provision', 'up']
-  provisioning_cmds.include?(ARGV[0].downcase)
+  if ARGV.length > 0
+    provisioning_cmds.include?(ARGV[0].downcase)
+  end
 end
 
 Vagrant.configure(2) do |config|
