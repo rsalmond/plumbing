@@ -39,3 +39,7 @@
       - kubelet
   - name: CREATE a cluster master node
     command: kubeadm init --pod-network-cidr=192.168.99.0/24 --apiserver-cert-extra-sans=vagrant-k8s
+  - name: FETCH kubectl config file
+    fetch:
+      src: /etc/kubernetes/admin.conf
+      dest: ./kubeconfig
