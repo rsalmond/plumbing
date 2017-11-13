@@ -1,5 +1,0 @@
-box:
-  host: box.salmond.ca
-  user: phro
-  sudo: true
-  priv: ~/.ssh/id_salmond_ca
