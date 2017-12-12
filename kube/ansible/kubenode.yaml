@@ -1,8 +1,13 @@
 ---
-- hosts: vagrant
-  remote_user: ubuntu
+- hosts: 23.226.231.216
+  remote_user: phro
   become: yes
+  become_method: sudo
   tasks:
+  - name: test
+    command: whoami
+  - name: Disable swap
+    command: swapoff -a
   - name: INTSALL essentials
     action: >
       {{ ansible_pkg_mgr }} name={{ item }} state=present update_cache=yes
@@ -14,12 +19,12 @@
       - software-properties-common
   - name: ADD docker repository key
     apt_key:
-      url: https://download.docker.com/linux/ubuntu/gpg
+      url: https://download.docker.com/linux/debian/gpg
       id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
       state: present
   - name: ADD docker repository
     apt_repository:
-      repo: deb https://download.docker.com/linux/ubuntu xenial stable
+      repo: deb [arch=amd64] https://download.docker.com/linux/debian jessie stable
       state: present
   - name: ADD k8s repo key
     apt_key:
@@ -34,7 +39,7 @@
     action: >
       {{ ansible_pkg_mgr }} name={{ item }} state=present update_cache=yes
     with_items:
-      - docker-ce=17.03.2~ce-0~ubuntu-xenial
+      - docker-ce=17.03.2~ce-0~debian-jessie
       - kubeadm
       - kubelet
   - name: CREATE a cluster master node
