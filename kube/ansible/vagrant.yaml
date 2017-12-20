@@ -16,6 +16,16 @@
       - apt-transport-https
       - ca-certificates
       - software-properties-common
+      - iptables-persistent
+  - name: drop firewall rules file
+    copy:
+      src: ./etc/iptables.up.rules
+      dest: /etc/iptables.up.rules
+  - name: drop firelwall setup script
+    copy:
+      src: ./etc/network/if-pre-up.d/iptables
+      dest: /etc/network/if-pre-up.d/iptables
+      mode: 0755
   - name: ADD docker repository key
     apt_key:
       url: https://download.docker.com/linux/debian/gpg
