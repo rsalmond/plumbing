@@ -1,3 +1,5 @@
+.venv
+*.retry
 *.swp
 .vagrant
 .terraform

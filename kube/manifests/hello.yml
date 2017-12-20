@@ -18,8 +18,7 @@ spec:
       - name: hello
         image: gcr.io/rsa-servers/hello:latest
         ports:
-        - containerPort: 80
-          hostPort: 80
+        - containerPort: 5000
 
 ---
 
@@ -33,5 +32,22 @@ spec:
   type: ClusterIP
   ports:
   - protocol: TCP
-    port: 5001
-    targetPort: 80
+    port: 80
+    targetPort: 5000
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: test-ingress
+  annotations:
+    ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /testpath
+        backend:
+          serviceName: hello-service
+          servicePort: 80

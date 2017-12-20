@@ -1,6 +1,6 @@
 ---
-- hosts: 23.226.231.216
-  remote_user: phro
+- hosts: vagrant
+  remote_user: vagrant
   become: yes
   become_method: sudo
   tasks:
