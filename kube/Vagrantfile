@@ -13,7 +13,7 @@ Vagrant.configure(2) do |config|
   config.vm.provider "virtualbox" do |vb|
     vb.memory = "2048"
   end
-  config.vm.provision "file", source: "./grubfile", destination: "/tmp/grubfile"
+  config.vm.provision "file", source: "./vagrant-files/grubfile", destination: "/tmp/grubfile"
   config.vm.provision "shell", inline: "sudo mv /tmp/grubfile /etc/default/grub"
   config.vm.provision "shell", inline: "sudo update-grub2"
   config.vm.provision "shell", inline: "/bin/grep -v swap /etc/fstab | sudo tee /etc/fstab"
