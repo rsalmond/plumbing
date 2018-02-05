@@ -21,11 +21,13 @@
     copy:
       src: ./etc/iptables.up.rules
       dest: /etc/iptables.up.rules
-  - name: drop firelwall setup script
+  - name: drop firewall setup script
     copy:
       src: ./etc/network/if-pre-up.d/iptables
       dest: /etc/network/if-pre-up.d/iptables
       mode: 0755
+  - name: apply fw rules
+    shell: /sbin/iptables-restore < /etc/iptables.up.rules
   - name: ADD docker repository key
     apt_key:
       url: https://download.docker.com/linux/debian/gpg
@@ -51,8 +53,6 @@
       - docker-ce=17.03.2~ce-0~debian-jessie
       - kubeadm
       - kubelet
-  - name: CREATE a cluster master node
-    command: kubeadm init --pod-network-cidr=192.168.0.0/16 --apiserver-cert-extra-sans=vagrant-k8s
   - name: FETCH kubectl config file
     fetch:
       src: /etc/kubernetes/admin.conf

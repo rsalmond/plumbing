@@ -6,6 +6,7 @@ vagrant reload
 
 # apply the ansible playbook
 ./dev-ansible.sh ansible/vagrant.yaml
+./dev-ansible.sh ansible/vagrant-kube-init.yaml
 
 # run postscript (enable kube router, image registry secrets, and ingress controllers)
 ./postscript.sh
