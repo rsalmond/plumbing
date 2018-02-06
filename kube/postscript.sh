@@ -3,13 +3,6 @@
 # enable full features of kube-router networking
 kubectl apply -f https://raw.githubusercontent.com/cloudnativelabs/kube-router/master/daemonset/kubeadm-kuberouter-all-features.yaml
 
-# enable calico
-#kubectl apply -f https://docs.projectcalico.org/v2.6/getting-started/kubernetes/installation/hosted/kubeadm/1.6/calico.yaml
-
-#enable flannel
-#kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/v0.9.1/Documentation/kube-flannel.yml
-#kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
-
 # allow pods to be scheduled on the master
 kubectl taint nodes --all node-role.kubernetes.io/master-
 
@@ -27,5 +20,5 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/mast
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/udp-services-configmap.yaml
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/rbac.yaml
 
-# install modified nginx pod with hostnetworking enabled
+# install modified nginx pod with hostnetworking enabled (so we can listen on 80/443)
 kubectl apply -f manifests/nginx-deployment-with-rbac.yaml
