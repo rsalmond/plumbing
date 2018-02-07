@@ -12,7 +12,7 @@ vagrant reload
 
 # put the fetched kubeconfig in place
 cp ansible/kubeconfig/127.0.0.1/etc/kubernetes/admin.conf ~/.kube/config
-sed -i 's/10\.0\.2\.15/jessie/' ~/.kube/config
+sed -i 's/10\.0\.2\.15/vagrant-k8s/' ~/.kube/config
 
 # run postscript (enable kube router, image registry secrets, and ingress controllers)
 ./postscript.sh

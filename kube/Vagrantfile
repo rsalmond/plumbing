@@ -6,16 +6,28 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 
+$add_grub_cmd = <<SCRIPT
+grep -v GRUB_CMDLINE_LINUX\= /etc/default/grub > /tmp/grub.new
+oldval=$(grep GRUB_CMDLINE_LINUX\= /etc/default/grub | awk -F '=' '{print $2}' | grep -v \\")
+echo GRUB_CMDLINE_LINUX=\\"${oldval} cgroup_enable=memory\\" >> /tmp/grub.new
+SCRIPT
+
+
 Vagrant.configure(2) do |config|
-  config.vm.box = "debian/jessie64"
+  #config.vm.box = "debian/jessie64"
+  #config.vm.box = "debian/stretch64"
+  config.vm.box = "generic/debian9"
+  #config.vm.box = "ubuntu/xenial64"
   config.vm.network "private_network", ip: "192.168.33.10"
   config.vm.synced_folder ".", "/vagrant", disabled: true
   config.vm.provider "virtualbox" do |vb|
     vb.memory = "2048"
   end
   # necessary to do this first to add the kernel flag required for kube
-  config.vm.provision "file", source: "./vagrant-files/grubfile", destination: "/tmp/grubfile"
-  config.vm.provision "shell", inline: "sudo mv /tmp/grubfile /etc/default/grub"
+  #config.vm.provision "file", source: "./vagrant-files/grubfile", destination: "/tmp/grubfile"
+  #config.vm.provision "shell", inline: "sudo mv /tmp/grubfile /etc/default/grub"
+  config.vm.provision "shell", inline: $add_grub_cmd
+  config.vm.provision "shell", inline: "sudo mv /tmp/grub.new /etc/default/grub"
   config.vm.provision "shell", inline: "sudo update-grub2"
   config.vm.provision "shell", inline: "/bin/grep -v swap /etc/fstab | sudo tee /etc/fstab"
 end
