@@ -1,11 +1,5 @@
 #!/bin/bash
 
-# enable full features of kube-router networking
-kubectl apply -f https://raw.githubusercontent.com/cloudnativelabs/kube-router/master/daemonset/kubeadm-kuberouter-all-features.yaml
-
-# allow pods to be scheduled on the master
-kubectl taint nodes --all node-role.kubernetes.io/master-
-
 # create secret for pulling containers from gcr
 kubectl create secret docker-registry gcr-json-key --docker-server https://gcr.io --docker-username _json_key --docker-email=containers@rsa-servers.iam.gserviceaccount.com --docker-password="$(cat ~/.ssh/rsa-servers-bdeedbfb9414.json)"
 
@@ -22,3 +16,6 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/mast
 
 # install modified nginx pod with hostnetworking enabled (so we can listen on 80/443)
 kubectl apply -f manifests/nginx-deployment-with-rbac.yaml
+
+# give svc account cluster-admin so helm will work
+kubectl create clusterrolebinding add-on-cluster-admin --clusterrole=cluster-admin --serviceaccount=kube-system:default
