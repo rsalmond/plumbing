@@ -14,5 +14,8 @@ vagrant reload
 cp ansible/kubeconfig/127.0.0.1/etc/kubernetes/admin.conf ~/.kube/config
 sed -i 's/10\.0\.2\.15/vagrant-k8s/' ~/.kube/config
 
-# run postscript (enable kube router, image registry secrets, and ingress controllers)
-./postscript.sh
+# enable full features of kube-router networking
+kubectl apply -f https://raw.githubusercontent.com/cloudnativelabs/kube-router/master/daemonset/kubeadm-kuberouter-all-features.yaml
+
+# allow pods to be scheduled on the master
+kubectl taint nodes --all node-role.kubernetes.io/master-
