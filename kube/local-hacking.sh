@@ -2,6 +2,10 @@
 
 # start and then reboot the vagrant vm (to make the grub config change take hold)
 vagrant up
+
+./dev-ansible.sh ansible/cgroup.yaml
+
+# need to reboot after changing cgroups
 vagrant reload
 
 # install all the requirements, repos, etc
