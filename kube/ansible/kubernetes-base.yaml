@@ -1,6 +1,5 @@
 ---
-- hosts: vagrant
-  remote_user: vagrant
+- hosts: all
   become: yes
   become_method: sudo
   tasks:
