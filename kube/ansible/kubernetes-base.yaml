@@ -16,9 +16,8 @@
       - ca-certificates
       - software-properties-common
       - iptables-persistent
-  - name: drop firewall rules file
-    copy:
-      src: ./etc/iptables.up.rules
+  - template:
+      src: ./etc/iptables.up.rules.j2
       dest: /etc/iptables.up.rules
   - name: drop firewall setup script
     copy:
