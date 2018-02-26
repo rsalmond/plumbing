@@ -1,13 +1,17 @@
 #!/bin/bash
 
+set -e
+
 # start and then reboot the vagrant vm (to make the grub config change take hold)
 vagrant up
 
+sleep 2
 ./dev-ansible.sh ansible/cgroup.yaml
 
 # need to reboot after changing cgroups
 vagrant reload
 
+sleep 2
 # install all the requirements, repos, etc
 ./dev-ansible.sh ansible/kubernetes-base.yaml
 
@@ -15,7 +19,7 @@ vagrant reload
 ./dev-ansible.sh ansible/kube-init.yaml
 
 # put the fetched kubeconfig in place
-cp ansible/kubeconfig/127.0.0.1/etc/kubernetes/admin.conf ~/.kube/config
+cp ansible/kubeconfig/kubernetes/etc/kubernetes/admin.conf ~/.kube/config
 sed -i 's/10\.0\.2\.15/kubernetes/' ~/.kube/config
 
 # enable full features of kube-router networking
