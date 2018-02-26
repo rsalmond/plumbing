@@ -7,7 +7,11 @@ grep -v GRUB_CMDLINE_LINUX\= /etc/default/grub > /tmp/grub.new
 oldval=$(grep GRUB_CMDLINE_LINUX\= /etc/default/grub | awk -F '=' '{print $2}' | grep -v \")
 
 #add what we need to add and overwrite the old file
+{% if dev %}
 echo GRUB_CMDLINE_LINUX=\"${oldval} cgroup_enable=memory\" >> /tmp/grub.new
+{% else %}
+echo GRUB_CMDLINE_LINUX=\"${oldval} ro net.ifnames=0 biosdevname=0 noresume quiet cgroup_enable=memory\" >> /tmp/grub.new
+{% endif %}
 sudo mv /tmp/grub.new /etc/default/grub
 
 sudo update-grub2

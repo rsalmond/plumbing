@@ -4,8 +4,8 @@
   become_method: sudo
   tasks:
   - name: cgroup script
-    copy:
-      src: ./tmp/grubedit.sh
+    template:
+      src: ./tmp/grubedit.sh.j2
       dest: /tmp/grubedit.sh
       mode: 0755
   - name: enable cgroup
