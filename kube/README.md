@@ -13,4 +13,4 @@ A bunch of stuff to manage my personal servers. Featuring such thingies as:
 
 ## use:
 
-For local hacking: `./start-hacking.sh`
+For local hacking: `./local-hacking.sh`

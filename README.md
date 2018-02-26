@@ -17,4 +17,4 @@ Run `local-hacking.sh` to:
  * Run ansible playbooks to set up repos, base packages, initialize kubernetes, and fetch the kubeconfig file.
  * Apply kube manifests to enable networking, add docker image secrets for GCR, enable nginx ingress controller
 
- Currently supports jessie64 and debian9 boxes.
+ Currently supports debian9 boxes.
