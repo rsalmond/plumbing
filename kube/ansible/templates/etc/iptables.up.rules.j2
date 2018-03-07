@@ -20,6 +20,8 @@
 -A INPUT -p tcp --dport 6443 -j ACCEPT
 {% else %}
 -A INPUT -p tcp -s 50.68.58.71 --dport 6443 -j ACCEPT
+# allow pods to reach kube api
+-A INPUT -s 192.168.0.0/24 -p tcp -m tcp --dport 6443 -j ACCEPT
 {% endif %}
 #
 # # Allows SSH connections 
