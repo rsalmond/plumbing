@@ -15,6 +15,9 @@
 -A INPUT -p tcp --dport 80 -j ACCEPT
 -A INPUT -p tcp --dport 443 -j ACCEPT
 
+# # Allows VPN traffic to pass through the nginx tcp ingress
+-A INPUT -p tcp --dport 8080 -j ACCEPT
+
 # allow access to kube api
 {% if dev %}
 -A INPUT -p tcp --dport 6443 -j ACCEPT
