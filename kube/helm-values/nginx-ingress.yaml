@@ -1,0 +1,9 @@
+# create rbac role
+rbac:
+  create: true
+controller:
+  # allow us to bind to 80/443 (TODO: figure out how to get CNI portmap plugin to work)
+  hostNetwork: true
+  # dont try to create an ELB
+  service:
+    type: NodePort

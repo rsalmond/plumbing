@@ -1,0 +1,8 @@
+# we'll create a pesistent volume to store keys and config called openvpn ahead of time
+persistence:
+  existingClaim: openvpn
+service:
+  # dont try to create an ELB
+  type: NodePort
+  # not really necessary, just helps for clarity that this matches the nginx ingress tcp stream
+  externalPort: 8080

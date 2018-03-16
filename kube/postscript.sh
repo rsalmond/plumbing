@@ -13,7 +13,7 @@ helm init --service-account tiller
 
 # create a persistent volume claim (for keys) for openvpn and initialize it
 kubectl apply -f manifests/02-openvpn-persistent-vol.yaml
-helm install stable/openvpn --version 2.0.2 --set persistence.existingClaim=openvpn --set service.type=NodePort --set service.externalPort=8080
+helm install -f helm-values/openvpn.yaml stable/openvpn --version 2.0.2
 
 # install nginx ingress controller (including TCP pass through for VPN connectivity)
-helm install stable/nginx-ingress --set rbac.create=true --set controller.service.type=NodePort --set controller.hostNetwork=true --set tcp.8080=default/`kubectl get deployment -l 'chart in (openvpn-2.0.2)' -o jsonpath="{.items[0].metadata.name}"`:8080
+helm install -f helm-values/nginx-ingress.yaml --set tcp.8080=default/`kubectl get deployment -l 'chart in (openvpn-2.0.2)' -o jsonpath="{.items[0].metadata.name}"`:8080 stable/nginx-ingress
