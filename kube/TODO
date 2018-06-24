@@ -1,0 +1,7 @@
+Jump back inside kube-router and figure out wtf it wont route
+
+https://github.com/cloudnativelabs/kube-router/blob/master/Documentation/pod-toolbox.md#pod-toolbox
+
+-A INPUT -j LOG --log-prefix "INPUT:"
+-A FORWARD -j LOG --log-prefix "FORWARD:"
+-A OUTPUT -j LOG --log-prefix "OUTPUT:"
