@@ -96,6 +96,9 @@ spec:
       - effect: NoSchedule
         key: node-role.kubernetes.io/master
         operator: Exists
+			- key: node.kubernetes.io/not-ready
+        operator: Exists
+        effect: NoSchedule
       volumes:
       - name: lib-modules
         hostPath:
