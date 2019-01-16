@@ -6,16 +6,17 @@
   - name: Disable swap
     command: swapoff -a
   - name: INTSALL essentials
-    action: >
-      {{ ansible_pkg_mgr }} name={{ item }} state=present update_cache=yes
-    with_items:
-      - vim
-      - tmux
-      - wget
-      - apt-transport-https
-      - ca-certificates
-      - software-properties-common
-      - iptables-persistent
+    apt:
+      name: "{{ packages }}"
+    vars:
+      packages:
+        - vim
+        - tmux
+        - wget
+        - apt-transport-https
+        - ca-certificates
+        - software-properties-common
+        - iptables-persistent
   - template:
       src: ./etc/iptables.up.rules.j2
       dest: /etc/iptables.up.rules
@@ -38,18 +39,19 @@
   - name: ADD k8s repo key
     apt_key:
       url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
-      id: D0BC747FD8CAF7117500D6FA3746C208A7317B0F
+      id: 54A647F9048D5688D7DA2ABE6A030B21BA07F4FB
       state: present
   - name: ADD k8s repo
     apt_repository:
       repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
       state: present
   - name: INSTALL docker and k8s
-    action: >
-      {{ ansible_pkg_mgr }} name={{ item }} state=present update_cache=yes
-    with_items:
-      - docker-ce=17.03.2~ce-0~debian-jessie
-      - kubeadm
-      - kubelet
+    apt:
+      name: "{{ packages }}"
+    vars:
+      packages:
+        - docker-ce=17.03.2~ce-0~debian-jessie
+        - kubeadm
+        - kubelet
   - name: make k8s persistent volume subdir for openvpn
     file: path=/mnt/kubedata/openvpn state=directory 
