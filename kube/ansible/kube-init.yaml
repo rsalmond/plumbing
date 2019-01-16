@@ -4,7 +4,7 @@
   become_method: sudo
   tasks:
   - name: CREATE a cluster master node
-    command: kubeadm init --pod-network-cidr=192.168.0.0/16 --service-cidr=10.96.0.0/16 --kubernetes-version=1.9.2
+    command: kubeadm init --pod-network-cidr=192.168.0.0/16 --service-cidr=10.96.0.0/16 --kubernetes-version=1.13.0
   - name: FETCH kubectl config file
     fetch:
       src: /etc/kubernetes/admin.conf
