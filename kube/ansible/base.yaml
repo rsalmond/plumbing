@@ -20,6 +20,9 @@
   - template:
       src: ./etc/iptables.up.rules.j2
       dest: /etc/iptables.up.rules
+  - template:
+      src: ./etc/ip6tables.up.rules.j2
+      dest: /etc/ip6tables.up.rules
   - name: drop firewall setup script
     copy:
       src: ./etc/network/if-pre-up.d/iptables
@@ -27,6 +30,8 @@
       mode: 0755
   - name: apply fw rules
     shell: /sbin/iptables-restore < /etc/iptables.up.rules
+  - name: apply fw6 rules
+    shell: /sbin/ip6tables-restore < /etc/ip6tables.up.rules
   - name: ADD docker repository key
     apt_key:
       url: https://download.docker.com/linux/debian/gpg

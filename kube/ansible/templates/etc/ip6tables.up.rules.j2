@@ -11,7 +11,7 @@
 {% if dev %}
 -A INPUT -p tcp -m tcp --dport 6443 -j ACCEPT
 {% else %}
--A INPUT -s 2601:8c3:8200:c2b0::b0ff/128 -p tcp -m tcp --dport 6443 -j ACCEPT
+-A INPUT -s 2601:8c3:8200:c2b0:0:0:0:0/112 -p tcp -m tcp --dport 6443 -j ACCEPT
 {% endif %}
 
 -A INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT
