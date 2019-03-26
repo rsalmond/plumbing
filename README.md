@@ -1,5 +1,5 @@
 # plumbing
-My server management stuff
+My server management stuff.
 
 ## Terraform
 
