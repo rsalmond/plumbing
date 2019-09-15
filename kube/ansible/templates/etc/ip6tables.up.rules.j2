@@ -8,11 +8,7 @@
 -A INPUT -p tcp -m tcp --dport 443 -j ACCEPT
 -A INPUT -p tcp -m tcp --dport 8080 -j ACCEPT
 
-{% if dev %}
 -A INPUT -p tcp -m tcp --dport 6443 -j ACCEPT
-{% else %}
--A INPUT -s 2601:8c3:8200:c2b0:0:0:0:0/112 -p tcp -m tcp --dport 6443 -j ACCEPT
-{% endif %}
 
 -A INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT
 -A INPUT -p ipv6-icmp -j ACCEPT

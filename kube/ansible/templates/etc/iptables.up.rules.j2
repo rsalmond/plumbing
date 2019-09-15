@@ -19,13 +19,9 @@
 -A INPUT -p tcp --dport 8080 -j ACCEPT
 
 # allow access to kube api
-{% if dev %}
 -A INPUT -p tcp --dport 6443 -j ACCEPT
-{% else %}
--A INPUT -p tcp -s 50.68.58.71 --dport 6443 -j ACCEPT
 # allow pods to reach kube api
 -A INPUT -s 192.168.0.0/16 -p tcp -m tcp --dport 6443 -j ACCEPT
-{% endif %}
 #
 # # Allows SSH connections 
 # # The --dport number is the same as in /etc/ssh/sshd_config
