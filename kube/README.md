@@ -14,3 +14,5 @@ A bunch of stuff to manage my personal servers. Featuring such thingies as:
 ## use:
 
 For local hacking: `./local-hacking.sh`
+
+Deploy prod: `./prod-ansible.sh ansible/base.yaml`
