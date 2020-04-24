@@ -23,6 +23,7 @@
         - ca-certificates
         - software-properties-common
         - iptables-persistent
+        - rsync
   - template:
       src: ./etc/iptables.up.rules.j2
       dest: /etc/iptables.up.rules
