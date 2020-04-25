@@ -1,0 +1,220 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: appoptics
+  namespace: appoptics
+  labels:
+    app: appoptics
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: appoptics
+  template:
+    metadata:
+      labels:
+        app: appoptics
+    spec:
+      serviceAccountName: appoptics
+      containers:
+        - name: appoptics
+          image: 'solarwinds/solarwinds-snap-agent-docker:latest'
+          imagePullPolicy: Always
+          env:
+            - name: APPOPTICS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: appoptics
+                  key: APPOPTICS_TOKEN
+          envFrom:
+            - configMapRef:
+                name: appoptics-deployment
+          resources:
+            limits:
+              cpu: 100m
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 256Mi
+          ports:
+          - containerPort: 21413
+          #livenessProbe:
+          #  httpGet:
+          #    path: /v1/plugins
+          #    port: 21413
+          #  initialDelaySeconds: 5
+          #  timeoutSeconds: 5
+          #readinessProbe:
+          #  httpGet:
+          #    path: /v1/plugins
+          #    port: 21413
+          #  initialDelaySeconds: 5
+          #  timeoutSeconds: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+
+---
+
+apiVersion: v1
+kind: List
+items:
+# Service Account for swisnap-agent-k8s
+- apiVersion: v1
+  kind: ServiceAccount
+  metadata:
+    name: appoptics
+    namespace: appoptics
+# Create ClusterRole that enables swisnap-agent-k8s to access requisite kube-api resources
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: ClusterRole
+  metadata:
+    name: appoptics
+  rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: [""]
+    resources: ["nodes"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["*"]
+    resources: ["deployments"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: [""]
+    resources: ["events"]
+    verbs: ["get", "list", "watch"]
+# Bind the appoptics with the appoptics we created above
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: ClusterRoleBinding
+  metadata:
+    name: appoptics
+  subjects:
+  - kind: ServiceAccount
+    name: appoptics
+    namespace: appoptics
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: ClusterRole
+    name: appoptics
+
+---
+
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: appoptics
+  namespace: appoptics
+  labels:
+    daemon: appoptics
+spec:
+  updateStrategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      daemon: appoptics-ds
+  template:
+    metadata:
+      name: appoptics-ds
+      labels:
+        daemon: appoptics-ds
+    spec:
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule
+      containers:
+      - name: swisnap-agent-ds
+        image: 'solarwinds/solarwinds-snap-agent-docker:latest'
+        imagePullPolicy: Always
+        env:
+          - name: APPOPTICS_HOSTNAME
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.nodeName
+          - name: APPOPTICS_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: appoptics
+                key: APPOPTICS_TOKEN
+        envFrom:
+          - configMapRef:
+              name: appoptics-ds
+        volumeMounts:
+          - name: docker-sock
+            mountPath: /var/run/docker.sock
+          - name: proc
+            mountPath: /host/proc
+            readOnly: true
+          - name: cgroup
+            mountPath: /sys/fs/cgroup
+        #livenessProbe:
+        #  httpGet:
+        #    path: /v1/plugins
+        #    port: 21413
+        #  initialDelaySeconds: 5
+        #  timeoutSeconds: 5
+        #readinessProbe:
+        #  httpGet:
+        #    path: /v1/plugins
+        #    port: 21413
+        #  initialDelaySeconds: 5
+        #  timeoutSeconds: 5
+      volumes:
+        - name: docker-sock
+          hostPath:
+            path: /var/run/docker.sock
+        - name: proc
+          hostPath:
+            path: /proc
+        - name: cgroup
+          hostPath:
+            path: /sys/fs/cgroup
+        - name: appoptics-ds
+          configMap:
+            name: appoptics-ds
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: appoptics-deployment
+  namespace: appoptics
+data:
+  SWISNAP_ENABLE_APACHE: 'false'
+  SWISNAP_ENABLE_DOCKER: 'false'
+  SWISNAP_ENABLE_ELASTICSEARCH: 'false'
+  SWISNAP_ENABLE_KUBERNETES: 'true'
+  SWISNAP_ENABLE_MESOS: 'false'
+  SWISNAP_ENABLE_MONGODB: 'false'
+  SWISNAP_ENABLE_MYSQL: 'false'
+  SWISNAP_ENABLE_RABBITMQ: 'false'
+  SWISNAP_ENABLE_STATSD: 'false'
+  SWISNAP_ENABLE_ZOOKEEPER: 'false'
+  SWISNAP_DISABLE_HOSTAGENT: 'true'
+  SWISNAP_DISABLE_PROCESSES: 'true'
+  SWISNAP_SECURE: 'false'
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: appoptics-ds
+  namespace: appoptics
+data:
+  SWISNAP_ENABLE_APACHE: 'false'
+  SWISNAP_ENABLE_DOCKER: 'true'
+  SWISNAP_ENABLE_ELASTICSEARCH: 'false'
+  SWISNAP_ENABLE_KUBERNETES: 'false'
+  SWISNAP_ENABLE_MESOS: 'false'
+  SWISNAP_ENABLE_MONGODB: 'false'
+  SWISNAP_ENABLE_MYSQL: 'false'
+  SWISNAP_ENABLE_RABBITMQ: 'false'
+  SWISNAP_ENABLE_STATSD: 'false'
+  SWISNAP_ENABLE_ZOOKEEPER: 'false'
+  SWISNAP_DISABLE_HOSTAGENT: 'false'
+  SWISNAP_DISABLE_PROCESSES: 'false'
+  SWISNAP_SECURE: 'false'
+  HOST_PROC: '/host/proc'
