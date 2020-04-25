@@ -61,20 +61,21 @@ spec:
       containers:
       - name: rsablog
         image: rsalmond/blog:0.0.1
+        imagePullPolicy: Always
         ports:
         - containerPort: 2370
         env:
         - name: GHOST_CONFIG
           value: /config/config.js
         - name: NODE_ENV
-          value: development
+          value: production
         #command: ["tail"]
         #args: ["-f", "/dev/null"]
         volumeMounts:
         - name: config
           mountPath: /config
         - name: content
-          mountPath: /blog/content
+          mountPath: /content
       volumes:
         - name: config
           configMap:
@@ -145,7 +146,7 @@ data:
                 client: 'sqlite3',
                 connection: {
                     //filename: path.join(__dirname, '/content/data/ghost-dev.db')
-                    filename: '/blog/content/data/ghost-dev.db'
+                    filename: '/content/data/ghost-dev.db'
                 },
                 debug: true
             },
@@ -157,7 +158,7 @@ data:
             },
             paths: {
                 //contentPath: path.join(__dirname, '/content/')
-                contentPath: '/blog/content/'
+                contentPath: '/content/'
             }
         },
 
@@ -170,15 +171,21 @@ data:
             database: {
                 client: 'sqlite3',
                 connection: {
-                    filename: path.join(__dirname, '/content/data/ghost-prod.db')
+                    //filename: path.join(__dirname, '/content/data/ghost-prod.db')
+                    filename: '/content/data/ghost-prod.db'
                 },
-                debug: false
+                //TODO: debug: false
+                debug: true
             },
             server: {
                 // Host to be passed to node's `net.Server#listen()`
-                host: '127.0.0.1',
+                host: '0.0.0.0',
                 // Port to be passed to node's `net.Server#listen()`, for iisnode set this to `process.env.PORT`
                 port: '2370'
+            },
+            paths: {
+                //contentPath: path.join(__dirname, '/content/')
+                contentPath: '/content/'
             }
         },
 
@@ -262,6 +269,7 @@ data:
         }
     };
 
+    console.log(config.production.database.connection.filename)
     console.log(config)
 
     // Export config
