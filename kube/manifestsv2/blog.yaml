@@ -111,6 +111,16 @@ spec:
   hosts:
   - test.salmond.ca
   http:
+  - name: nginx
+    match:
+    - uri:
+        prefix: "/files"
+    route:
+    - destination:
+        host: nginx.rsablog.svc.cluster.local
+        port:
+          number: 80
+
   - name: rsablog
     match:
     - uri:
@@ -120,7 +130,6 @@ spec:
         host: rsablog.rsablog.svc.cluster.local
         port:
           number: 2370
-
 ---
 
 apiVersion: v1
@@ -274,3 +283,76 @@ data:
 
     // Export config
     module.exports = config;
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  namespace: rsablog
+  labels:
+    app: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.17.10
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        #command: ["tail"]
+        #args: ["-f", "/dev/null"]
+        volumeMounts:
+        - name: config
+          mountPath: /etc/nginx/conf.d
+        - name: files
+          mountPath: /files
+      volumes:
+        - name: config
+          configMap:
+            name: nginx
+        - name: files
+          persistentVolumeClaim:
+            claimName: rsablog
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+  namespace: rsablog
+spec:
+  ports:
+  - port: 80
+    name: http
+  selector:
+    app: nginx
+
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx
+  namespace: rsablog
+data:
+  nginx.conf: |
+    server {
+        listen       80;
+        server_name  localhost;
+        location /files/ {
+          alias /files/;
+          autoindex on;
+        }
+    }
