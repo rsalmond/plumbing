@@ -112,6 +112,22 @@ spec:
   hosts:
   - test.salmond.ca
   http:
+  - name: resume
+    match:
+    - uri:
+        exact: /resume
+    redirect:
+        uri: /rsalmond/resume/
+        authority: github.com
+
+  - name: kops-talk
+    match:
+    - uri:
+        exact: /kops-talk
+    redirect:
+        uri: /presentation/d/17pfzwPTNSLp8t8X_4aoUI2S62_OpNL2-QxCP--mYaEw/
+        authority: docs.google.com
+
   - name: nginx
     match:
     - uri:
