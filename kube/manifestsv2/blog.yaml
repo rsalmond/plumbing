@@ -74,6 +74,7 @@ spec:
         volumeMounts:
         - name: config
           mountPath: /config
+          readOnly: true
         - name: content
           mountPath: /content
       volumes:
@@ -285,6 +286,41 @@ data:
     module.exports = config;
 
 ---
+### Static Assets Config
+#
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nginx
+  namespace: rsablog
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 500Mi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /mnt/kubedata/blog/files/
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nginx
+  namespace: rsablog
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+
+---
 
 apiVersion: apps/v1
 kind: Deployment
@@ -314,6 +350,7 @@ spec:
         volumeMounts:
         - name: config
           mountPath: /etc/nginx/conf.d
+          readOnly: true
         - name: files
           mountPath: /files
       volumes:
@@ -322,7 +359,7 @@ spec:
             name: nginx
         - name: files
           persistentVolumeClaim:
-            claimName: rsablog
+            claimName: nginx
 
 ---
 
