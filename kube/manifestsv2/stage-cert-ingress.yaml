@@ -8,6 +8,6 @@ spec:
   issuerRef:
     name: letsencrypt-stage
     kind: ClusterIssuer
-  commonName: test.salmond.ca
+  commonName: rob.salmond.ca
   dnsNames:
-  - test.salmond.ca
+  - rob.salmond.ca

@@ -14,7 +14,7 @@ resource "aws_route53_record" "rob_salmond_ca" {
   ttl     = "300"
 
   records = [
-    var.vps_ip,
+    var.brazen_ip
   ]
 }
 
