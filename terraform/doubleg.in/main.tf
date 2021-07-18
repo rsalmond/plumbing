@@ -26,6 +26,7 @@ resource "aws_route53_record" "txt" {
   ttl     = "300"
 
   records = [
-    "v=spf1 include:spf.improvmx.com ~all"
+    "v=spf1 include:spf.improvmx.com ~all",
+    "google-site-verification=kQ7HmycxdrVs--SwHeHOA4IyliOvLHd1T3Q9CqzC2AA"
   ]
 }

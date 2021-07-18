@@ -7,9 +7,13 @@ kubectl create secret docker-registry gcr-json-key --docker-server https://gcr.i
 # give gcr secret to the default k8s service account
 kubectl patch serviceaccount default -p "{\"imagePullSecrets\": [{\"name\": \"gcr-json-key\"}]}"
 
-# create a persistent volume claim (for keys) for openvpn and initialize it
-#kubectl apply -f manifests/02-openvpn-persistent-vol.yaml
-#helm install -f helm-values/openvpn.yaml stable/openvpn --version 3.7.0
+kubectl create namespace istio-system
 
-# install nginx ingress controller (including TCP pass through for VPN connectivity)
-#helm install -f helm-values/nginx-ingress.yaml --set tcp.8080=default/`kubectl get deployment -l 'chart in (openvpn-3.7.0)' -o jsonpath="{.items[0].metadata.name}"`:8080 stable/nginx-ingress
+istioctl install --skip-confirmation -f manifestsv3/istio-1.10.3-modified-profile.yaml
+
+kubectl apply -f manifestsv3/gateway.yaml
+kubectl apply -f manifestsv3/cert-manager.yaml
+kubectl apply -f manifestsv3/cert-issuer-prod.yaml
+kubectl apply -f manifestsv3/prod-cert-ingress.yaml
+
+kubectl apply -f manifestsv3/blog.yaml

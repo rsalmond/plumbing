@@ -1,0 +1,30 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: istio-ingressgateway
+  namespace: istio-system
+  labels:
+    app: istio-ingressgateway
+    istio: ingressgateway
+    release: istio
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 80
+      protocol: HTTP
+      name: http
+    hosts:
+    - "*"
+    tls:
+      httpsRedirect: true
+  - port:
+      number: 443
+      protocol: HTTPS
+      name: https-default
+    tls:
+      mode: SIMPLE
+      credentialName: ingress-cert
+    hosts:
+    - "rob.salmond.ca"
