@@ -1,1 +1,2 @@
-helm install -f helm-values/cert-manager-stage.yaml stable/cert-manager
+helm template -f helm-values/cert-manager-prod.yaml jetstack/cert-manager
+

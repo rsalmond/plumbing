@@ -9,11 +9,12 @@ kubectl patch serviceaccount default -p "{\"imagePullSecrets\": [{\"name\": \"gc
 
 kubectl create namespace istio-system
 
-istioctl install --skip-confirmation -f manifestsv3/istio-1.14.1-modified-profile.yaml
+./istioctl install --skip-confirmation -f manifestsv3/istio-1.16.1-modified-profile.yaml
+
+helm install certman -f helm-values/cert-manager-prod.yaml jetstack/cert-manager
+kubectl apply -f manifestsv3/cert-issuer-prod.yaml
 
 kubectl apply -f manifestsv3/gateway.yaml
-kubectl apply -f manifestsv3/cert-manager-1.8.2.yaml
-kubectl apply -f manifestsv3/cert-issuer-prod.yaml
 kubectl apply -f manifestsv3/prod-cert-ingress.yaml
 
 kubectl apply -f manifestsv3/blog.yaml
