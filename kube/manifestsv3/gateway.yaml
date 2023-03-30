@@ -25,6 +25,15 @@ spec:
       name: https-default
     tls:
       mode: SIMPLE
-      credentialName: ingress-cert
+      credentialName: ingress-cert-rob
     hosts:
     - "rob.salmond.ca"
+  - port:
+      number: 443
+      protocol: HTTPS
+      name: https-default
+    tls:
+      mode: SIMPLE
+      credentialName: ingress-cert-fear
+    hosts:
+    - "fearisthevibekiller.com"

@@ -1,13 +1,29 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: ingress-cert
+  name: ingress-cert-rob
   namespace: istio-system
 spec:
-  secretName: ingress-cert
+  secretName: ingress-cert-rob
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
   commonName: rob.salmond.ca
   dnsNames:
   - rob.salmond.ca
+
+---
+
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: ingress-cert-fear
+  namespace: istio-system
+spec:
+  secretName: ingress-cert-fear
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: fearisthevibekiller.com
+  dnsNames:
+  - fearisthevibekiller.com
