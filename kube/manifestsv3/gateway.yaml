@@ -22,7 +22,7 @@ spec:
   - port:
       number: 443
       protocol: HTTPS
-      name: https-default
+      name: https-blog
     tls:
       mode: SIMPLE
       credentialName: ingress-cert-rob
@@ -31,7 +31,7 @@ spec:
   - port:
       number: 443
       protocol: HTTPS
-      name: https-default
+      name: https-fear
     tls:
       mode: SIMPLE
       credentialName: ingress-cert-fear
