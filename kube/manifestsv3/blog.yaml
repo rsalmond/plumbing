@@ -338,6 +338,39 @@ spec:
 
 ---
 
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: fear
+  namespace: rsablog
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 500Mi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /mnt/kubedata/fear/
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: fear
+  namespace: rsablog
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+
+---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -369,6 +402,8 @@ spec:
           readOnly: true
         - name: files
           mountPath: /files
+        - name: fear
+          mountPath: /fear
       volumes:
         - name: config
           configMap:
@@ -376,6 +411,9 @@ spec:
         - name: files
           persistentVolumeClaim:
             claimName: nginx
+        - name: fear
+          persistentVolumeClaim:
+            claimName: fear
 
 ---
 
@@ -408,4 +446,9 @@ data:
           alias /files/;
           autoindex on;
         }
+    }
+    server {
+      listen 80;
+      server_name fearisthevibekiller.com;
+      root /fear;
     }

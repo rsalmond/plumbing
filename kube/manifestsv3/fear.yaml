@@ -9,10 +9,12 @@ spec:
   hosts:
   - fearisthevibekiller.com
   http:
-  - name: insta
+  - name: static
     match:
     - uri:
         prefix: /
-    redirect:
-        uri: /fearisthevibekiller
-        authority: instagram.com
+    route:
+    - destination:
+        host: nginx.rsablog.svc.cluster.local
+        port:
+          number: 80
