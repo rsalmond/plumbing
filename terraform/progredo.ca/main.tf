@@ -14,8 +14,7 @@ resource "aws_route53_record" "mx" {
   ttl     = "300"
 
   records = [
-    "10 mx1.improvmx.com",
-    "10 mx2.improvmx.com",
+    "1 smtp.google.com",
   ]
 }
 
@@ -27,6 +26,7 @@ resource "aws_route53_record" "spf" {
 
   records = [
     "v=spf1 include:spf.improvmx.com ~all",
+    "google-site-verification=4fxmEud9OKFp3Pdc_weSJv49kgLYdTM3GoQgZ9UE2w0"
   ]
 }
 
