@@ -1,3 +1,11 @@
+terraform {
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+    }
+  }
+}
+
 provider "aws" {
   region  = "us-east-1"
   profile = "personal"
@@ -26,6 +34,7 @@ resource "aws_route53_record" "keybase" {
 
   records = [
     "keybase-site-verification=nbjNfHKEJbQ7ysooVytqqDdE3NKbYxIGWsvMnnBeelI",
+    "v=spf1 include:_spf.google.com include:fearisthevibekiller.com ~all"
   ]
 }
 
