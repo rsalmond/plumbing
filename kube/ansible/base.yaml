@@ -41,6 +41,8 @@
     shell: /sbin/ip6tables-restore < /etc/ip6tables.up.rules
   - name: make k8s persistent volume subdir for blog
     file: path=/mnt/kubedata/blog state=directory
+  - name: make k8s persistent volume subdir for fearisthevibekiller
+    file: path=/mnt/kubedata/fear state=directory
   - name: grab k3s installer
     get_url: url=https://get.k3s.io dest=/tmp/k3s.sh mode=0755
   - name: install k3s
