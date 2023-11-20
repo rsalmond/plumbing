@@ -7,6 +7,27 @@ data "aws_route53_zone" "progredo_ca" {
   name = "progredo.ca"
 }
 
+
+resource "aws_route53_record" "web" {
+  zone_id = data.aws_route53_zone.progredo_ca.zone_id
+  name    = ""
+  type    = "A"
+  ttl     = "300"
+
+  records = ["178.128.137.126"]
+
+}
+
+resource "aws_route53_record" "web_cname" {
+  zone_id = data.aws_route53_zone.progredo_ca.zone_id
+  name    = "www"
+  type    = "CNAME"
+  ttl     = "300"
+
+  records = ["progredo-systems-inc.ghost.io"]
+
+}
+
 resource "aws_route53_record" "mx" {
   zone_id = data.aws_route53_zone.progredo_ca.zone_id
   name    = data.aws_route53_zone.progredo_ca.name
