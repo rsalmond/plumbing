@@ -16,9 +16,8 @@ spec:
       protocol: HTTP
       name: http
     hosts:
-    - "*"
-    tls:
-      httpsRedirect: true
+    - "rob.salmond.ca"
+    - "fearisthevibekiller.com"
   - port:
       number: 443
       protocol: HTTPS
