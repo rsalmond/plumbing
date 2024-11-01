@@ -26,6 +26,28 @@ resource "aws_route53_record" "rob_salmond_ca" {
   ]
 }
 
+resource "aws_route53_record" "svcb" {
+  zone_id = aws_route53_zone.salmond_ca.zone_id
+  name    = "rob.${aws_route53_zone.salmond_ca.name}"
+  type    = "SVCB"
+  ttl     = "300"
+
+  records = [
+    "1 rob.salmond.ca alpn=h2"
+  ]
+}
+
+resource "aws_route53_record" "https" {
+  zone_id = aws_route53_zone.salmond_ca.zone_id
+  name    = "rob.${aws_route53_zone.salmond_ca.name}"
+  type    = "HTTPS"
+  ttl     = "300"
+
+  records = [
+    "1 rob.salmond.ca alpn=h2"
+  ]
+}
+
 resource "aws_route53_record" "keybase" {
   zone_id = aws_route53_zone.salmond_ca.zone_id
   name    = aws_route53_zone.salmond_ca.name
