@@ -72,3 +72,19 @@ resource "aws_route53_record" "mx" {
     "10 ALT1.ASPMX.L.GOOGLE.COM",
   ]
 }
+
+resource "aws_route53_record" "terry" {
+  zone_id = aws_route53_zone.salmond_ca.zone_id
+  name    = "terry.${aws_route53_zone.salmond_ca.name}"
+  type    = "A"
+  ttl     = "300"
+  records = [var.webware_ip]
+}
+
+resource "aws_route53_record" "terry_www" {
+  zone_id = aws_route53_zone.salmond_ca.zone_id
+  name    = "www.terry.${aws_route53_zone.salmond_ca.name}"
+  type    = "CNAME"
+  ttl     = "300"
+  records = ["lb.webware.io"]
+}
