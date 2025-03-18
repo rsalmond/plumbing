@@ -31,6 +31,39 @@ resource "aws_route53_record" "txt" {
   ]
 }
 
+resource "aws_route53_record" "return" {
+  zone_id = aws_route53_zone.growthfestival.zone_id
+  name    = "em1066890.${aws_route53_zone.growthfestival.name}"
+  type    = "CNAME"
+  ttl     = "300"
+
+  records = [
+    "return.smtp2go.net"
+  ]
+}
+
+resource "aws_route53_record" "dkim" {
+  zone_id = aws_route53_zone.growthfestival.zone_id
+  name    = "s1066890._domainkey.${aws_route53_zone.growthfestival.name}"
+  type    = "CNAME"
+  ttl     = "300"
+
+  records = [
+    "dkim.smtp2go.net"
+  ]
+}
+
+resource "aws_route53_record" "track" {
+  zone_id = aws_route53_zone.growthfestival.zone_id
+  name    = "link.${aws_route53_zone.growthfestival.name}"
+  type    = "CNAME"
+  ttl     = "300"
+
+  records = [
+    "track.smtp2go.net"
+  ]
+}
+
 /*
 resource "aws_route53_record" "pizza_a" {
   zone_id = aws_route53_zone.growthfestival.zone_id
