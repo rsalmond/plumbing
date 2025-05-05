@@ -5,7 +5,7 @@ provider "aws" {
 
 resource "aws_route53_zone" "growthfestival" {
   comment = "HostedZone created by Route53 Registrar"
-  name = var.domain
+  name    = var.domain
 }
 
 resource "aws_route53_record" "mx" {
@@ -31,58 +31,41 @@ resource "aws_route53_record" "txt" {
   ]
 }
 
-resource "aws_route53_record" "return" {
-  zone_id = aws_route53_zone.growthfestival.zone_id
-  name    = "em1066890.${aws_route53_zone.growthfestival.name}"
-  type    = "CNAME"
-  ttl     = "300"
+/* notion hosting */
 
-  records = [
-    "return.smtp2go.net"
-  ]
-}
-
-resource "aws_route53_record" "dkim" {
-  zone_id = aws_route53_zone.growthfestival.zone_id
-  name    = "s1066890._domainkey.${aws_route53_zone.growthfestival.name}"
-  type    = "CNAME"
-  ttl     = "300"
-
-  records = [
-    "dkim.smtp2go.net"
-  ]
-}
-
-resource "aws_route53_record" "track" {
-  zone_id = aws_route53_zone.growthfestival.zone_id
-  name    = "link.${aws_route53_zone.growthfestival.name}"
-  type    = "CNAME"
-  ttl     = "300"
-
-  records = [
-    "track.smtp2go.net"
-  ]
-}
-
-/*
-resource "aws_route53_record" "pizza_a" {
-  zone_id = aws_route53_zone.growthfestival.zone_id
-  name    = aws_route53_zone.growthfestival.name
-  type    = "A"
-  ttl     = "300"
-
-  records = [
-    "89.106.200.1" // redirect.pizza
-  ]
-}
-
-resource "aws_route53_record" "pizza_cname" {
+resource "aws_route53_record" "www" {
   zone_id = aws_route53_zone.growthfestival.zone_id
   name    = "www.${aws_route53_zone.growthfestival.name}"
   type    = "CNAME"
   ttl     = "300"
 
   records = [
-    "edge.redirect.pizza" // redirect.pizza
+    "external.notion.site"
   ]
-}*/
+}
+
+resource "aws_route53_record" "notion_txt" {
+  zone_id = aws_route53_zone.growthfestival.zone_id
+  name    = "_notion-dcv.www.${aws_route53_zone.growthfestival.name}"
+  type    = "TXT"
+  ttl     = "300"
+
+  records = [
+    "1ea8199c-d59f-8196-97b6-0070b5930d6f"
+  ]
+}
+
+/* stupid bucket redirect trick */
+
+resource "aws_route53_record" "redirect" {
+  zone_id = aws_route53_zone.growthfestival.zone_id
+  name    = aws_route53_zone.growthfestival.name
+  type    = "A"
+
+  alias {
+    name                   = "s3-website-us-east-1.amazonaws.com" /* magic!? */
+    zone_id                = aws_s3_bucket.redirect.hosted_zone_id
+    evaluate_target_health = true
+  }
+
+}
