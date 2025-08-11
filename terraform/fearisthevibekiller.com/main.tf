@@ -7,15 +7,41 @@ resource "aws_route53_zone" "fearisthevibekiller" {
   name = "fearisthevibekiller.com"
 }
 
-resource "aws_route53_record" "fearisthevibekiller" {
+resource "aws_route53_record" "github_pages" {
   zone_id = aws_route53_zone.fearisthevibekiller.zone_id
   name    = "${aws_route53_zone.fearisthevibekiller.name}"
   type    = "A"
   ttl     = "300"
 
   records = [
-    var.brazen_ip
+    "185.199.108.153",
+    "185.199.109.153",
+    "185.199.110.153",
+    "185.199.111.153",
   ]
+}
+
+resource "aws_route53_record" "github_pages_ipv6" {
+  zone_id = aws_route53_zone.fearisthevibekiller.zone_id
+  name    = "${aws_route53_zone.fearisthevibekiller.name}"
+  type    = "AAAA"
+  ttl     = "300"
+
+  records = [
+    "2606:50c0:8000::153",
+    "2606:50c0:8001::153",
+    "2606:50c0:8002::153",
+    "2606:50c0:8003::153",
+  ]
+}
+
+resource "aws_route53_record" "www_github_pages" {
+  zone_id = aws_route53_zone.fearisthevibekiller.zone_id
+  name    = "www.${aws_route53_zone.fearisthevibekiller.name}"
+  type    = "CNAME"
+  ttl     = "300"
+
+  records = ["rsalmond.github.io"]
 }
 
 resource "aws_route53_record" "mx" {
