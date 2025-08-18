@@ -415,6 +415,8 @@ spec:
         volumeMounts:
         - name: config
           mountPath: /etc/nginx/conf.d
+        - name: htpasswd
+          mountPath: /etc/nginx/htpasswd
           readOnly: true
         - name: files
           mountPath: /files
@@ -424,6 +426,9 @@ spec:
         - name: config
           configMap:
             name: nginx
+        - name: htpasswd
+          secret:
+            secretName: htpasswd
         - name: files
           persistentVolumeClaim:
             claimName: nginx
@@ -467,4 +472,8 @@ data:
       listen 80;
       server_name growthfestival.ca;
       root /growth;
+      location / {
+        auth_basic "testing";
+        auth_basic_user_file /etc/nginx/htpasswd/htpasswd;
+      }
     }
