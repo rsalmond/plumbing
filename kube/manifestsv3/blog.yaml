@@ -357,7 +357,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: fear
+  name: growth
   namespace: rsablog
   labels:
     type: local
@@ -368,14 +368,14 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: /mnt/kubedata/fear/
+    path: /mnt/kubedata/growth/
 
 ---
 
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: fear
+  name: growth
   namespace: rsablog
 spec:
   storageClassName: manual
@@ -415,21 +415,26 @@ spec:
         volumeMounts:
         - name: config
           mountPath: /etc/nginx/conf.d
+        - name: htpasswd
+          mountPath: /etc/nginx/htpasswd
           readOnly: true
         - name: files
           mountPath: /files
-        - name: fear
-          mountPath: /fear
+        - name: growth
+          mountPath: /growth
       volumes:
         - name: config
           configMap:
             name: nginx
+        - name: htpasswd
+          secret:
+            secretName: htpasswd
         - name: files
           persistentVolumeClaim:
             claimName: nginx
-        - name: fear
+        - name: growth
           persistentVolumeClaim:
-            claimName: fear
+            claimName: growth
 
 ---
 
@@ -465,6 +470,9 @@ data:
     }
     server {
       listen 80;
-      server_name fearisthevibekiller.com;
-      root /fear;
+      server_name growthfestival.ca;
+      root /growth;
+      location / {
+        auth_basic_user_file /etc/nginx/htpasswd/htpasswd;
+      }
     }

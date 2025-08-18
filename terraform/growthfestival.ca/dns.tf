@@ -31,41 +31,13 @@ resource "aws_route53_record" "txt" {
   ]
 }
 
-/* github hosting */
-
-resource "aws_route53_record" "github_pages" {
+resource "aws_route53_record" "growthfestival_ca" {
   zone_id = aws_route53_zone.growthfestival.zone_id
-  name    = "${aws_route53_zone.growthfestival.name}"
+  name    = aws_route53_zone.growthfestival.name
   type    = "A"
   ttl     = "300"
 
   records = [
-    "185.199.108.153",
-    "185.199.109.153",
-    "185.199.110.153",
-    "185.199.111.153",
+    var.brazen_ip
   ]
-}
-
-resource "aws_route53_record" "github_pages_ipv6" {
-  zone_id = aws_route53_zone.growthfestival.zone_id
-  name    = "${aws_route53_zone.growthfestival.name}"
-  type    = "AAAA"
-  ttl     = "300"
-
-  records = [
-    "2606:50c0:8000::153",
-    "2606:50c0:8001::153",
-    "2606:50c0:8002::153",
-    "2606:50c0:8003::153",
-  ]
-}
-
-resource "aws_route53_record" "www_github_pages" {
-  zone_id = aws_route53_zone.growthfestival.zone_id
-  name    = "www.${aws_route53_zone.growthfestival.name}"
-  type    = "CNAME"
-  ttl     = "300"
-
-  records = ["rsalmond.github.io"]
 }

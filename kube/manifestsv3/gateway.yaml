@@ -17,7 +17,7 @@ spec:
       name: http
     hosts:
     - "rob.salmond.ca"
-    - "fearisthevibekiller.com"
+    - "growthfestival.ca"
   - port:
       number: 443
       protocol: HTTPS
@@ -30,9 +30,9 @@ spec:
   - port:
       number: 443
       protocol: HTTPS
-      name: https-fear
+      name: https-growth
     tls:
       mode: SIMPLE
-      credentialName: ingress-cert-fear
+      credentialName: ingress-cert-growth
     hosts:
-    - "fearisthevibekiller.com"
+    - "growthfestival.ca"

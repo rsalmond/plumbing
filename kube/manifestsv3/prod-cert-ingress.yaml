@@ -17,13 +17,13 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: ingress-cert-fear
+  name: ingress-cert-growth
   namespace: istio-system
 spec:
-  secretName: ingress-cert-fear
+  secretName: ingress-cert-growth
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
-  commonName: fearisthevibekiller.com
+  commonName: growthfestival.ca
   dnsNames:
-  - fearisthevibekiller.com
+  - growthfestival.ca
