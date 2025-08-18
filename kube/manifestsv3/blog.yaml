@@ -473,7 +473,6 @@ data:
       server_name growthfestival.ca;
       root /growth;
       location / {
-        auth_basic "testing";
         auth_basic_user_file /etc/nginx/htpasswd/htpasswd;
       }
     }
