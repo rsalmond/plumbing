@@ -101,9 +101,9 @@ resource "aws_route53_record" "mx" {
 resource "aws_route53_record" "terry" {
   zone_id = aws_route53_zone.salmond_ca.zone_id
   name    = "terry.${aws_route53_zone.salmond_ca.name}"
-  type    = "A"
+  type    = "CNAME"
   ttl     = "300"
-  records = [var.webware_ip]
+  records = ["edge.redirect.pizza."]
 }
 
 resource "aws_route53_record" "terry_www" {
@@ -111,5 +111,5 @@ resource "aws_route53_record" "terry_www" {
   name    = "www.terry.${aws_route53_zone.salmond_ca.name}"
   type    = "CNAME"
   ttl     = "300"
-  records = ["lb.webware.io"]
+  records = ["edge.redirect.pizza."]
 }
