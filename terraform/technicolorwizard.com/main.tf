@@ -3,14 +3,14 @@ provider "aws" {
   profile = "personal"
 }
 
-resource "aws_route53_zone" "technicolorwizard" {
+resource "aws_route53_zone" "tcw" {
   comment = "HostedZone created by Route53 Registrar"
   name = var.domain
 }
 
 resource "aws_route53_record" "mx" {
-  zone_id = aws_route53_zone.technicolorwizard.zone_id
-  name    = aws_route53_zone.technicolorwizard.name
+  zone_id = aws_route53_zone.tcw.zone_id
+  name    = aws_route53_zone.tcw.name
   type    = "MX"
   ttl     = "300"
 
@@ -21,8 +21,8 @@ resource "aws_route53_record" "mx" {
 }
 
 resource "aws_route53_record" "txt" {
-  zone_id = aws_route53_zone.technicolorwizard.zone_id
-  name    = aws_route53_zone.technicolorwizard.name
+  zone_id = aws_route53_zone.tcw.zone_id
+  name    = aws_route53_zone.tcw.name
   type    = "TXT"
   ttl     = "300"
 
@@ -32,8 +32,8 @@ resource "aws_route53_record" "txt" {
 }
 
 resource "aws_route53_record" "pizza_a" {
-  zone_id = aws_route53_zone.technicolorwizard.zone_id
-  name    = aws_route53_zone.technicolorwizard.name
+  zone_id = aws_route53_zone.tcw.zone_id
+  name    = aws_route53_zone.tcw.name
   type    = "A"
   ttl     = "300"
 
@@ -43,8 +43,8 @@ resource "aws_route53_record" "pizza_a" {
 }
 
 resource "aws_route53_record" "pizza_cname" {
-  zone_id = aws_route53_zone.technicolorwizard.zone_id
-  name    = "www.${aws_route53_zone.technicolorwizard.name}"
+  zone_id = aws_route53_zone.tcw.zone_id
+  name    = "www.${aws_route53_zone.tcw.name}"
   type    = "CNAME"
   ttl     = "300"
 

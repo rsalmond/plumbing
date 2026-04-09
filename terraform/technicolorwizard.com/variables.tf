@@ -1,3 +1,3 @@
 variable "domain" {
-  default = "technicolorwizard.com"
+  default = "thetechnicolourwizard.com"
 }
