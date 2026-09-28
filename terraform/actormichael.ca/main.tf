@@ -12,7 +12,7 @@ resource "aws_route53_zone" "am" {
 
 // begin carrd.co config
 
-resource "aws_route53_record" "rob_salmond_ca" {
+resource "aws_route53_record" "am" {
   zone_id = aws_route53_zone.am.zone_id
   name    = aws_route53_zone.am.name
   type    = "A"
@@ -23,13 +23,13 @@ resource "aws_route53_record" "rob_salmond_ca" {
   ]
 }
 
-resource "aws_route53_record" "sendgrid0" {
+resource "aws_route53_record" "am_cname" {
   zone_id = aws_route53_zone.am.zone_id
   name = "www.${aws_route53_zone.am.name}"
   type = "CNAME"
   ttl = "300"
   records = [
-    "actormichael.ca."
+    "${var.domain}."
   ]
 }
 
