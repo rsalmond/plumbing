@@ -8,6 +8,19 @@ resource "aws_route53_zone" "hexlace" {
   name = var.domain
 }
 
+
+resource "aws_route53domains_registered_domain" "hexlace" {
+  domain_name = var.domain
+
+  name_server {
+    name = "anirban.ns.cloudflare.com"
+  }
+
+  name_server {
+    name = "dolly.ns.cloudflare.com"
+  }
+}
+
 // begin carrd.co config
 
 resource "aws_route53_record" "hexlace" {
